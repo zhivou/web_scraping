@@ -43,7 +43,7 @@ class SonyAII < Main
 	end
 
 	#
-	# Accessors
+	# Filters
 	#
 	def filter_ending_soonest
 		@page = self.page.link_with(xpath: "//span[.='Time: ending soonest']/..").click
@@ -62,7 +62,9 @@ class SonyAII < Main
 	end
 end
 
-sony_search = SonyAII.new
-sony_search.search("Sony a7 ii")
-sony_search.filter_newly_listed
-p ''
+s = SonyAII.new
+s.search("Sony a7 ii")
+s.filter_newly_listed
+s.filter_us_only
+s.get_all_links
+
