@@ -1,12 +1,30 @@
 require '../../main'
 
-class SonyAII < Main
-	attr_accessor :page
+class Ebay < Main
+	attr_accessor :page,
+								:search_phrase,
+								:newly_listed,
+								:us_only
 
 	PAGINATION = "//ol[@class='x-pagination__ol']//li[@class='x-pagination__li'][last()]"
+	URL = "https://www.ebay.com/"
 
-	def initialize
-		@page = goto("https://www.ebay.com/")
+	def initialize(
+		search_phrase,
+		newly_listed:false,
+		us_only:false
+	)
+		@page = goto(URL)
+		@search_phrase = search_phrase
+		@newly_listed = newly_listed
+		@us_only = us_only
+	end
+
+	def start
+		search(search_phrase)
+		filter_newly_listed if newly_listed
+		filter_us_only if us_only
+		get_all_links
 	end
 
 	def search(phrase)
@@ -61,10 +79,4 @@ class SonyAII < Main
 		@page = self.page.link_with(xpath: "//span[.='US Only']//ancestor::a").click
 	end
 end
-
-s = SonyAII.new
-s.search("Sony a7 ii")
-s.filter_newly_listed
-s.filter_us_only
-s.get_all_links
 
