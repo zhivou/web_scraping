@@ -35,10 +35,13 @@ class Ebay < Main
 
 	def get_all_links
 		result = []
-		@page.links.each do |link|
-			if link.dom_class == 's-item__link'
-				result << link
+		(pagination_count.to_i - 1).times do
+			@page.links.each do |link|
+				if link.dom_class == 's-item__link'
+					result << link
+				end
 			end
+			click_next_page
 		end
 		result
 	end
@@ -47,17 +50,8 @@ class Ebay < Main
 		@page.xpath(PAGINATION).text
 	end
 
-	##
-	# TODO: Something isn't working here!
-	#
-	def pagination
-		result = []
-		@page.links.each do |link|
-			if link.dom_class == "x-pagination__li"
-				result << link
-			end
-		end
-		result
+	def click_next_page
+		@page = self.page.link_with(xpath: "//a[@class='x-pagination__control'][@rel='next']").click
 	end
 
 	#
