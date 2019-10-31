@@ -1,0 +1,9 @@
+default: &default
+  adapter:  'postgresql'
+  host:     '12'
+  database: 'ebay_sells'
+  username: 'ebay'
+  password: 'startebay'
+  strict: false
+  reconnect: true
+  automatic_close: false
